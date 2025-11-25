@@ -1,6 +1,6 @@
 {
 	"main": "dist/_worker.js/index.js",
-	"name": "password",
+	"name": "pass",
   "compatibility_date": "2025-11-25",
   "compatibility_flags": [
     "nodejs_compat",
