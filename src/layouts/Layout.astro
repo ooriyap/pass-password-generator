@@ -1,0 +1,55 @@
+---
+import "../styles/global.css";
+import SEOMeta from "../components/SEOMeta.astro";
+import { pwaInfo } from "virtual:pwa-info";
+
+interface Props {
+    title: string;
+    description: string;
+    lang?: "en" | "fa";
+}
+
+const { title, description, lang = "en" } = Astro.props;
+const dir = lang === "fa" ? "rtl" : "ltr";
+---
+
+<!doctype html>
+<html lang={lang} dir={dir} class="scroll-smooth">
+    <head>
+        <SEOMeta title={title} description={description} lang={lang} />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Vazirmatn:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet"
+        />
+        {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
+        <script src="/src/pwa.ts"></script>
+        <!-- Theme Init Script -->
+        <script is:inline>
+            const theme = (() => {
+                if (
+                    typeof localStorage !== "undefined" &&
+                    localStorage.getItem("theme")
+                ) {
+                    return localStorage.getItem("theme");
+                }
+                if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                    return "dark";
+                }
+                return "light";
+            })();
+            if (theme === "dark") {
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+            }
+            window.localStorage.setItem("theme", theme);
+        </script>
+    </head>
+    <body
+        class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen flex flex-col font-sans antialiased"
+    >
+        <slot />
+    </body>
+</html>

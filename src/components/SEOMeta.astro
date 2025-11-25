@@ -1,0 +1,37 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  lang: "en" | "fa";
+}
+
+const { title, description, lang } = Astro.props;
+
+// For production, this should be the actual domain.
+// Using Astro.url.origin for now which works in dev.
+const baseUrl = Astro.url.origin;
+const enUrl = `${baseUrl}/`;
+const faUrl = `${baseUrl}/fa`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || baseUrl);
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width" />
+<meta
+  name="theme-color"
+  content="#ffffff"
+  media="(prefers-color-scheme: light)"
+/>
+<meta
+  name="theme-color"
+  content="#111827"
+  media="(prefers-color-scheme: dark)"
+/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="generator" content={Astro.generator} />
+<title>{title}</title>
+<meta name="description" content={description} />
+
+<link rel="alternate" hreflang="en" href={enUrl} />
+<link rel="alternate" hreflang="fa" href={faUrl} />
+<link rel="canonical" href={canonicalURL} />
